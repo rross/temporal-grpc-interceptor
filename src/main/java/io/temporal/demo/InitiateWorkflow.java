@@ -2,8 +2,14 @@ package io.temporal.demo;
 
 import io.temporal.client.WorkflowOptions;
 
+import java.util.Random;
+
 public class InitiateWorkflow {
     public static void main(String[] args)  {
+        // Generate a fake token for testing purposes
+        var token = "Negotiate " + new Random().nextInt();
+        UserContext.setUserContext(token);
+
         Client client = new Client();
 
         WorkflowOptions workflowOptions = WorkflowOptions.newBuilder().

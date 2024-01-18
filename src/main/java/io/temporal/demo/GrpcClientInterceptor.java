@@ -18,7 +18,10 @@ public class GrpcClientInterceptor implements ClientInterceptor {
             @Override
             public void start(Listener<RespT> responseListener, Metadata headers) {
                 logger.info("calling {}", methodDescriptor.getBareMethodName() );
-                // TODO: modify the headers
+                var userToken = UserContext.getUserContext().getUserToken();
+                logger.info("Setting userToken {} in header", userToken);
+                headers.put(Metadata.Key.of("Proxy-Authorize", Metadata.ASCII_STRING_MARSHALLER), userToken);
+
                 super.start(
                         new ForwardingClientCallListener.SimpleForwardingClientCallListener<RespT>(
                                 responseListener) {
